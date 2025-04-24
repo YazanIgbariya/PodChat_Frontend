@@ -1,0 +1,133 @@
+.login-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff; /* dark navy */
+  font-family: "Segoe UI", sans-serif;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 360px;
+  padding: 40px 30px;
+  background-color: #ffffff; /* stays white */
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: #000000; /* text stays black */
+}
+
+.login-box h2 {
+  margin-bottom: 18px;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.subtitle {
+  color: #444;
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+
+.logo {
+  width: 120px;
+  height: auto;
+  margin: 0 auto 12px auto;
+  display: block;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+input {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px;
+  margin: 6px 0;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button.primary {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px;
+  margin-top: 12px;
+  background-color: #152238; /* navy instead of black */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+button.primary:hover {
+  background-color: #1f2f45;
+}
+
+.divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 24px 0 18px;
+  font-size: 13px;
+  color: #aaa;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #ddd;
+  margin: 0 10px;
+}
+
+.google-btn {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  background: white;
+  margin-left: 29.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background-color 0.2s;
+  margin-top: 10px;
+}
+
+.google-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.google-btn:hover {
+  background-color: #f7f7f7;
+}
+
+.signup-text {
+  font-size: 14px;
+  margin-top: 20px;
+}
+.signup-text .text-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding-left: 5px;
+  font-size: 14px;
+}
+.signup-text .text-button:hover {
+  text-decoration: underline;
+}
