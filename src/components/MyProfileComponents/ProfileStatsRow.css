@@ -1,0 +1,29 @@
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.stat-box {
+  flex: 1;
+  border: 1px solid #eee;
+  padding: 16px;
+  margin: 0 8px;
+  border-radius: 12px;
+  background-color: var(--bg-color);
+  border: var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.stat-number {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--button-color);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--scnd-text-color);
+  margin-top: 6px;
+}

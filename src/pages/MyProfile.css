@@ -1,0 +1,26 @@
+.myprofile-container {
+  max-width: 1000px;
+  margin: 40px 300px 40px auto;
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+  background: var(--container-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--button-color);
+  margin-bottom: 16px;
+}
+
+.back-btn {
+  margin-top: 40px;
+  background: none;
+  border: none;
+  color: var(--button-color);
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: underline;
+}

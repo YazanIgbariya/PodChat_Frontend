@@ -1,0 +1,53 @@
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-box {
+  background: var(--bg-color);
+  padding: 20px;
+  border-radius: 12px;
+  width: 280px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative;
+}
+
+.popup-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+
+.popup-actions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.popup-actions button {
+  padding: 6px 12px;
+  border: none;
+  background: #152238;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.popup-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: transparent;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+}

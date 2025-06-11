@@ -1,0 +1,66 @@
+.top-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.top-modal-content {
+  background-color: var(--bg-color);
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.top-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+}
+
+.top-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.top-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.top-name {
+  flex: 1;
+  text-align: left;
+  font-weight: 500;
+}
+
+.top-count {
+  color: var(--scnd-text-color);
+}
+
+.top-medal {
+  font-size: 20px;
+}
+
+.top-close-button {
+  margin-top: 16px;
+  padding: 8px 16px;
+  border: none;
+  background: var(--button-color);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}

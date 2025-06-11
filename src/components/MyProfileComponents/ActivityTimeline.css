@@ -1,0 +1,41 @@
+.activity-timeline {
+  margin-top: 30px;
+}
+
+.timeline-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0 0;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.activity-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--button-color);
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.activity-details {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.activity-desc {
+  margin: 0;
+  font-weight: 500;
+}
+
+.activity-time {
+  color: #777;
+  font-size: 12px;
+  margin-top: 4px;
+}

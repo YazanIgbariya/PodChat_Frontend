@@ -12,7 +12,7 @@
 }
 
 .popup-content {
-  background: #fff;
+  background-color: var(--pop-color);
   padding: 30px;
   width: 90%;
   max-width: 600px;
@@ -41,8 +41,10 @@
 .form-group select {
   width: 100%;
   padding: 10px 14px;
+  background-color: var(--container-bg);
+  color: var(--text-color);
   font-size: 14px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   resize: vertical;
 }
@@ -52,7 +54,7 @@ textarea {
 }
 
 .form-group select {
-  background: #fff;
+  background: var(--container-bg);
   appearance: none;
   cursor: pointer;
 }
@@ -78,7 +80,7 @@ textarea {
 }
 
 .create-btn {
-  background-color: #152238;
+  background-color: var(--button-color);
   color: white;
   padding: 12px;
   font-size: 16px;

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./NewRoomPopup.css";
+import { auth } from "../firebase";
+import { api } from "../api";
 
 export default function NewRoomPopup({ onClose, onCreateThread }) {
   const [title, setTitle] = useState("");
@@ -7,6 +9,7 @@ export default function NewRoomPopup({ onClose, onCreateThread }) {
   const [category, setCategory] = useState("Technology");
   const [access, setAccess] = useState("public");
   const [enableAI, setEnableAI] = useState(false);
+  const [enableIntent, setEnableIntent] = useState(true); // ✅ default ON
   const [allowAnon, setAllowAnon] = useState(false);
 
   const categoryOptions = [
@@ -19,21 +22,41 @@ export default function NewRoomPopup({ onClose, onCreateThread }) {
     "Business",
   ];
 
-  const handleCreateThread = () => {
+  const handleCreateThread = async () => {
     if (!title.trim()) return;
-    const newThread = {
-      id: Date.now(),
-      title,
-      description,
-      category,
-      status: "Active",
-      time: "Just now",
-      participants: 1,
-    };
-    if (onCreateThread) {
-      onCreateThread(newThread);
+
+    const currentUser = auth.currentUser;
+    if (!currentUser) return;
+
+    try {
+      const res = await api.post("/thread", {
+        title,
+        description,
+        category,
+        createdBy: currentUser.uid,
+        access,
+        enableAI,
+        allowAnon,
+        enableIntent, // ✅ now included
+      });
+
+      const thread = res.data;
+
+      if (onCreateThread) {
+        onCreateThread({
+          id: thread.id,
+          title: thread.title,
+          status: thread.status,
+          participants: thread.participantCount,
+          summary: thread.summary,
+        });
+      }
+
+      onClose();
+    } catch (err) {
+      console.error("Failed to create thread:", err);
+      alert("❌ Could not create thread. Try again.");
     }
-    onClose();
   };
 
   return (
@@ -88,26 +111,7 @@ export default function NewRoomPopup({ onClose, onCreateThread }) {
 
           <div className="form-group radio-options">
             <label>Access Settings</label>
-            <label>
-              <input
-                type="radio"
-                name="access"
-                value="public"
-                checked={access === "public"}
-                onChange={() => setAccess("public")}
-              />
-              Open to everyone
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="access"
-                value="private"
-                checked={access === "private"}
-                onChange={() => setAccess("private")}
-              />
-              Invite only
-            </label>
+            {/* Placeholder: You can add more access options later */}
           </div>
 
           <div className="form-group toggles">
@@ -119,13 +123,16 @@ export default function NewRoomPopup({ onClose, onCreateThread }) {
               />
               Enable AI Summary
             </label>
+          </div>
+
+          <div className="form-group toggles">
             <label>
               <input
                 type="checkbox"
-                checked={allowAnon}
-                onChange={() => setAllowAnon(!allowAnon)}
+                checked={enableIntent}
+                onChange={() => setEnableIntent(!enableIntent)}
               />
-              Allow Anonymous Messages
+              Enable Intent Classification
             </label>
           </div>
 

@@ -1,9 +1,16 @@
+// src/pages/GenericDiscoverPage.js
 import React, { useState, useEffect } from "react";
 import "./Discover.css";
 import ThreadCard from "../components/ThreadCard";
 import NewRoomPopup from "../components/NewRoomPopup";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import { db } from "../firebase";
+import {
+  collection,
+  onSnapshot,
+  getDocs,
+  query,
+  orderBy,
+} from "firebase/firestore";
+import { db, auth } from "../firebase";
 
 const categories = [
   "All Threads",
@@ -16,27 +23,66 @@ const categories = [
   "Business",
 ];
 
-export const Discover = () => {
+export default function GenericDiscoverPage({ title, sortBy }) {
   const [selectedCategory, setSelectedCategory] = useState("All Threads");
   const [searchQuery, setSearchQuery] = useState("");
   const [threads, setThreads] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const user = auth.currentUser;
 
-  // 🔁 Real-time thread fetch
   useEffect(() => {
-    const q = query(collection(db, "threads"), orderBy("createdAt", "desc"));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const threadList = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setThreads(threadList);
-    });
+    const unsubscribe = onSnapshot(
+      collection(db, "threads"),
+      async (snapshot) => {
+        const enriched = await Promise.all(
+          snapshot.docs.map(async (docSnap) => {
+            const threadId = docSnap.id;
+            const data = docSnap.data();
+
+            const msgSnap = await getDocs(
+              collection(db, "threads", threadId, "messages")
+            );
+            const participantsSnap = await getDocs(
+              collection(db, "threads", threadId, "participants")
+            );
+
+            return {
+              id: threadId,
+              ...data,
+              messageCount: msgSnap.size,
+              participantCount: participantsSnap.size,
+            };
+          })
+        );
+
+        let sorted = enriched;
+
+        if (sortBy === "participants") {
+          sorted = enriched.sort(
+            (a, b) => b.participantCount - a.participantCount
+          );
+        } else if (sortBy === "createdAt") {
+          sorted = enriched.sort(
+            (a, b) =>
+              (b.createdAt?.toMillis?.() || 0) -
+              (a.createdAt?.toMillis?.() || 0)
+          );
+        } else if (sortBy === "starred") {
+          sorted = enriched.filter(
+            (thread) =>
+              Array.isArray(thread.starredBy) &&
+              user?.uid &&
+              thread.starredBy.includes(user.uid)
+          );
+        }
+
+        setThreads(sorted);
+      }
+    );
 
     return () => unsubscribe();
-  }, []);
+  }, [sortBy, user]);
 
-  // 🔍 Filter by category + search
   const filteredThreads = threads.filter((thread) => {
     const matchesCategory =
       selectedCategory === "All Threads" ||
@@ -49,7 +95,6 @@ export const Discover = () => {
     return matchesCategory && matchesSearch;
   });
 
-  // 🔴 Remove thread from UI after deletion
   const handleThreadDelete = (threadId) => {
     setThreads((prev) => prev.filter((thread) => thread.id !== threadId));
   };
@@ -57,7 +102,7 @@ export const Discover = () => {
   return (
     <div className="discover-wrapper">
       <div className="top-bar">
-        <h2>Discover</h2>
+        <h2>{title}</h2>
         <input
           type="text"
           placeholder="Search threads..."
@@ -105,4 +150,4 @@ export const Discover = () => {
       )}
     </div>
   );
-};
+}

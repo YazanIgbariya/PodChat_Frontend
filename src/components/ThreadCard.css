@@ -1,9 +1,9 @@
 .thread-card {
-  background: #fff;
+  background-color: var(--bg-color) !important;
   border-radius: 12px;
   padding: 20px;
   border: 1px solid #eee;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   transition: transform 0.2s ease;
 }
 
@@ -15,7 +15,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 13px;
-  color: #666;
+  color: var(--text-color);
   margin-bottom: 6px;
 }
 
@@ -44,7 +44,7 @@
 
 .thread-desc {
   font-size: 14px;
-  color: #444;
+  color: var(--text-color);
   margin-bottom: 14px;
 }
 
@@ -64,7 +64,7 @@
 }
 
 .thread-action {
-  background: #152238;
+  background: var(--button-color);
   color: white;
   border: none;
   padding: 8px 14px;
@@ -78,7 +78,7 @@
   justify-content: space-between;
   margin-bottom: 6px;
   font-size: 12px;
-  color: #666;
+  color: var(--text-color);
 }
 
 .thread-meta {
@@ -96,4 +96,9 @@
 
 .thread-star.active {
   color: gold;
+}
+
+.thread-action.leave {
+  background-color: #f44336;
+  color: white;
 }

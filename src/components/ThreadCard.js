@@ -1,55 +1,166 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ThreadCard.css";
 import { useNavigate } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
+import { auth } from "../firebase";
+import { api } from "../api"; // ✅ NEW import
 
-export default function ThreadCard({ thread }) {
+export default function ThreadCard({ thread, onDelete }) {
   const navigate = useNavigate();
-  const [isFavorited, setIsFavorited] = useState(false);
+  const user = auth.currentUser;
 
-  // Handle thread card click
-  const handleClick = () => {
-    if (thread.status === "Active") {
-      navigate(`/chat/${thread.id}`, { state: { thread } });
-    } else {
-      alert("Summary page not built yet.");
+  const {
+    id,
+    title = "Untitled Thread",
+    description = "No description provided.",
+    status = "Active",
+    participants = 0,
+    createdAt,
+    lastMessageTimestamp,
+    createdBy,
+    starredBy = [],
+  } = thread;
+
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [isParticipant, setIsParticipant] = useState(false);
+
+  useEffect(() => {
+    if (!user || !id) return;
+
+    // Only check if UID is in starredBy array
+    setIsFavorited(starredBy.includes(user.uid));
+
+    // Simple check for now; backend-driven alternative would be more secure
+    const fetchParticipation = async () => {
+      try {
+        const res = await api.get(`/user/${user.uid}/participatedThreads`);
+        const threadIds = res.data.threadIds || [];
+        setIsParticipant(threadIds.includes(id));
+      } catch (err) {
+        console.error("Failed to fetch participation:", err);
+      }
+    };
+
+    fetchParticipation();
+  }, [id, user, starredBy]);
+
+  const handleStarToggle = async (e) => {
+    e.stopPropagation();
+    if (!user) return;
+
+    try {
+      const updated = !isFavorited;
+      await api.post(`/thread/${id}/star`, {
+        uid: user.uid,
+        starred: updated,
+      });
+      setIsFavorited(updated);
+    } catch (err) {
+      console.error("Failed to toggle favorite:", err);
     }
   };
+
+  const handleJoin = async () => {
+    try {
+      await api.post(`/thread/${id}/join`, { uid: user.uid });
+      setIsParticipant(true);
+      navigate(`/chat/${id}`);
+    } catch (err) {
+      console.error("Failed to join thread:", err);
+    }
+  };
+
+  const handleView = () => {
+    navigate(`/chat/${id}`);
+  };
+
+  const handleLeave = async () => {
+    try {
+      await api.post(`/thread/${id}/leave`, { uid: user.uid });
+      setIsParticipant(false);
+    } catch (err) {
+      console.error("Failed to leave thread:", err);
+    }
+  };
+
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this thread?"
+    );
+    if (!confirmed) return;
+
+    try {
+      await api.delete(`/thread/${id}`, { data: { uid: user.uid } });
+      onDelete?.(id); // Notify parent
+    } catch (err) {
+      console.error("Failed to delete thread:", err);
+    }
+  };
+
+  const lastTimestamp = lastMessageTimestamp || createdAt;
+  const time =
+    lastTimestamp?.toDate && typeof lastTimestamp.toDate === "function"
+      ? formatDistanceToNow(lastTimestamp.toDate(), { addSuffix: true })
+      : "unknown";
 
   return (
     <div className="thread-card">
       <div className="thread-header">
-        <span className={`status-badge ${thread.status.toLowerCase()}`}>
-          {thread.status}
-        </span>
+        <span className={`status-badge ${status.toLowerCase()}`}>{status}</span>
         <div className="thread-meta">
-          <span className="thread-time">{thread.time}</span>
+          <span className="thread-time">{time}</span>
           <span
             className={`thread-star ${isFavorited ? "active" : ""}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsFavorited(!isFavorited);
-            }}
+            onClick={handleStarToggle}
           >
             {isFavorited ? "★" : "☆"}
           </span>
         </div>
       </div>
 
-      <h3 className="thread-title">{thread.title}</h3>
-      <p className="thread-desc">{thread.description}</p>
+      <h3 className="thread-title">{title}</h3>
+      <p className="thread-desc">{description}</p>
 
       <div className="thread-footer">
         <div className="avatars">
-          {[...Array(thread.participants)].map((_, i) => (
+          {[...Array(participants)].map((_, i) => (
             <span key={i} className="avatar">
               👤
             </span>
           ))}
         </div>
 
-        <button className="thread-action" onClick={handleClick}>
-          {thread.status === "Active" ? "Join Thread" : "View Summary"}
-        </button>
+        {user?.uid === createdBy ? (
+          <div style={{ display: "flex", gap: "10px" }}>
+            <button className="thread-action" onClick={handleView}>
+              View
+            </button>
+            <button
+              className="thread-action leave"
+              onClick={handleDelete}
+              style={{ backgroundColor: "#f44336" }}
+            >
+              Delete
+            </button>
+          </div>
+        ) : isParticipant ? (
+          <div style={{ display: "flex", gap: "10px" }}>
+            <button className="thread-action" onClick={handleView}>
+              View
+            </button>
+            <button
+              className="thread-action leave"
+              onClick={handleLeave}
+              style={{ backgroundColor: "#f44336", color: "white" }}
+            >
+              Leave
+            </button>
+          </div>
+        ) : (
+          <button className="thread-action" onClick={handleJoin}>
+            Join Thread
+          </button>
+        )}
       </div>
     </div>
   );

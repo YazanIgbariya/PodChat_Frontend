@@ -1,0 +1,83 @@
+.thread-card {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: var(--bg-color);
+  border: var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: var(--text-color);
+}
+
+.thread-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.status-badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-weight: 500;
+  background: #f0f0f0;
+  color: #666;
+}
+
+.status-badge.active {
+  background: #e1f0ff;
+  color: #005bb5;
+}
+
+.status-badge.completed,
+.status-badge.ended {
+  background: #f0f0f0;
+  color: #888;
+}
+
+.thread-date {
+  font-size: 13px;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.thread-meta {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--text-color);
+}
+.thread-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: auto;
+  margin-top: 20px;
+}
+.view-button {
+  background: var(--button-color);
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.leave-thread-button {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-thread-button {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}

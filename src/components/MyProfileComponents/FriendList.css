@@ -1,0 +1,61 @@
+.friend-list {
+  margin-top: 30px;
+}
+
+.friend-scroll-container {
+  max-height: 250px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 6px;
+}
+
+.friend-row {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px 16px;
+  gap: 16px;
+}
+
+.friend-pfp-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.friend-info {
+  flex: 1;
+}
+
+.friend-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.friend-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.friend-actions button {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  color: #eee;
+  background: var(--button-color);
+  cursor: pointer;
+}
+
+.friend-actions button.unfriend-btn {
+  background-color: #ff0202;
+  color: white;
+  border-color: var(--border-color);
+}

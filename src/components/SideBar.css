@@ -1,0 +1,48 @@
+.sidebar {
+  width: 180px;
+  padding: 20px;
+  background-color: var(--card-bg);
+  height: calc(100vh - 69px); /* topbar is 69px tall */
+  position: fixed;
+  left: 0;
+  top: 69px; /* start just below topbar */
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: "Segoe UI", sans-serif;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  border: var(--border-color);
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 18px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-link:hover {
+  background-color: #e8e8e8;
+  color: var(--hover-color);
+}
+
+.sidebar-link.active {
+  background-color: #363f72;
+  color: white;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
