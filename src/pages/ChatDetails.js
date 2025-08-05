@@ -6,6 +6,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import WordCloudModal from "../components/WordCloudModal";
 import IntentStatsModal from "../components/IntentStatsModal";
+import RougeStatsModal from "../components/RougeStatsModal";
 
 import {
   doc,
@@ -50,6 +51,8 @@ export const ChatDetails = () => {
   const [isSummarizing, setIsSummarizing] = useState(false);
   const [showWordCloudModal, setShowWordCloudModal] = useState(false);
   const [wordCloudData, setWordCloudData] = useState([]);
+  const [showRougeModal, setShowRougeModal] = useState(false);
+
   const [showIntent, setShowIntent] = useState(() => {
     return localStorage.getItem("showIntent") !== "false";
   });
@@ -199,6 +202,7 @@ export const ChatDetails = () => {
       const userRef = doc(db, "users", user.uid);
       const snapshot = await getDoc(userRef);
       if (snapshot.exists()) {
+        console.log("User data:", snapshot.data());
         setUserData(snapshot.data());
       }
     };
@@ -365,7 +369,7 @@ export const ChatDetails = () => {
           <span className="participants-count">
             {thread.participants} participants
           </span>
-          {isParticipant && (
+          {(isParticipant || userData?.role === "admin") && (
             <>
               <div
                 className="stats-button"
@@ -431,6 +435,8 @@ export const ChatDetails = () => {
                   onLeave={handleLeaveThread}
                   onShowWordCloud={handleShowWordCloud}
                   onShowIntentStats={() => setShowIntentStatsModal(true)}
+                  isAdmin={userData?.role === "admin"}
+                  onShowRougeModal={() => setShowRougeModal(true)}
                 />
               )}
             </>
@@ -595,6 +601,12 @@ export const ChatDetails = () => {
         <IntentStatsModal
           messages={messages}
           onClose={() => setShowIntentStatsModal(false)}
+        />
+      )}
+      {showRougeModal && (
+        <RougeStatsModal
+          threadId={thread.id}
+          onClose={() => setShowRougeModal(false)}
         />
       )}
     </div>

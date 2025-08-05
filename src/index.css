@@ -34,16 +34,16 @@ code {
 }
 
 body.dark {
-  --bg-color: #2b2b2b;
+  --bg-color: #181818;
   --text-color: #f0f0f0;
   --primary-color: #e0e0e0;
   --border-color: #333;
-  --card-bg: #1e1e1e;
+  --card-bg: #0f0f0f;
   --pfp-bg: #444;
   --bubble-bg: #2b2b2b;
-  --container-bg: #1e1e1e;
+  --container-bg: #0f0f0f;
   --button-color: #1a73e8;
   --hover-color: #363f72;
   --scnd-text-color: #f0f0f0;
-  --pop-color: #161616;
+  --pop-color: #0f0f0f;
 }

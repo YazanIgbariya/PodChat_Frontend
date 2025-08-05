@@ -17,6 +17,8 @@ const ThreadMenuPopup = ({
   onLeave,
   onShowWordCloud,
   onShowIntentStats,
+  onShowRougeModal,
+  isAdmin = false,
 }) => {
   const [pos, setPos] = useState({ top: 0, left: 0 });
 
@@ -49,6 +51,12 @@ const ThreadMenuPopup = ({
         <MdCloud size={18} style={{ marginRight: 8 }} />
         View Word Cloud
       </button>
+      {isAdmin && (
+        <button onClick={onShowRougeModal}>
+          <MdBarChart size={18} style={{ marginRight: 8 }} />
+          View ROUGE Summary Quality
+        </button>
+      )}
 
       <button onClick={onLeave} className="leave-button">
         <MdLogout size={18} style={{ marginRight: 8 }} />

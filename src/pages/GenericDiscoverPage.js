@@ -1,4 +1,3 @@
-// src/pages/GenericDiscoverPage.js
 import React, { useState, useEffect } from "react";
 import "./Discover.css";
 import ThreadCard from "../components/ThreadCard";
@@ -11,6 +10,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { db, auth } from "../firebase";
+import { api } from "../api";
 
 const categories = [
   "All Threads",
@@ -28,7 +28,21 @@ export default function GenericDiscoverPage({ title, sortBy }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [threads, setThreads] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [participatedThreadIds, setParticipatedThreadIds] = useState([]);
   const user = auth.currentUser;
+
+  useEffect(() => {
+    const fetchParticipated = async () => {
+      if (!user) return;
+      try {
+        const res = await api.get(`/user/${user.uid}/participatedThreads`);
+        setParticipatedThreadIds(res.data.threadIds || []);
+      } catch (err) {
+        console.error("Failed to fetch participated threads", err);
+      }
+    };
+    fetchParticipated();
+  }, [user]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -138,6 +152,7 @@ export default function GenericDiscoverPage({ title, sortBy }) {
             key={thread.id}
             thread={thread}
             onDelete={handleThreadDelete}
+            participatedThreadIds={participatedThreadIds}
           />
         ))}
       </div>

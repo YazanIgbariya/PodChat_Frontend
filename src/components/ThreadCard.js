@@ -3,9 +3,13 @@ import "./ThreadCard.css";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { auth } from "../firebase";
-import { api } from "../api"; // ✅ NEW import
+import { api } from "../api";
 
-export default function ThreadCard({ thread, onDelete }) {
+export default function ThreadCard({
+  thread,
+  onDelete,
+  participatedThreadIds = [],
+}) {
   const navigate = useNavigate();
   const user = auth.currentUser;
 
@@ -23,26 +27,15 @@ export default function ThreadCard({ thread, onDelete }) {
 
   const [isFavorited, setIsFavorited] = useState(false);
   const [isParticipant, setIsParticipant] = useState(false);
+  const [loadingParticipant, setLoadingParticipant] = useState(true);
 
   useEffect(() => {
     if (!user || !id) return;
 
-    // Only check if UID is in starredBy array
     setIsFavorited(starredBy.includes(user.uid));
-
-    // Simple check for now; backend-driven alternative would be more secure
-    const fetchParticipation = async () => {
-      try {
-        const res = await api.get(`/user/${user.uid}/participatedThreads`);
-        const threadIds = res.data.threadIds || [];
-        setIsParticipant(threadIds.includes(id));
-      } catch (err) {
-        console.error("Failed to fetch participation:", err);
-      }
-    };
-
-    fetchParticipation();
-  }, [id, user, starredBy]);
+    setIsParticipant(participatedThreadIds.includes(id));
+    setLoadingParticipant(false);
+  }, [id, user, starredBy, participatedThreadIds]);
 
   const handleStarToggle = async (e) => {
     e.stopPropagation();
@@ -91,7 +84,7 @@ export default function ThreadCard({ thread, onDelete }) {
 
     try {
       await api.delete(`/thread/${id}`, { data: { uid: user.uid } });
-      onDelete?.(id); // Notify parent
+      onDelete?.(id);
     } catch (err) {
       console.error("Failed to delete thread:", err);
     }
@@ -143,6 +136,10 @@ export default function ThreadCard({ thread, onDelete }) {
               Delete
             </button>
           </div>
+        ) : loadingParticipant ? (
+          <button className="thread-action" disabled>
+            Loading...
+          </button>
         ) : isParticipant ? (
           <div style={{ display: "flex", gap: "10px" }}>
             <button className="thread-action" onClick={handleView}>

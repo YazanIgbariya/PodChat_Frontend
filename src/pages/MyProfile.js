@@ -139,7 +139,7 @@ export default function MyProfile() {
           .sort((a, b) => b.timestamp?.toMillis() - a.timestamp?.toMillis());
         setActivityList(activity);
 
-        // ✅ Count actual messages sent
+        //  Count actual messages sent
         const messagesSent = activity.filter(
           (entry) => entry.type === "sent_message"
         );

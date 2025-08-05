@@ -3,7 +3,8 @@ import "./Discover.css";
 import ThreadCard from "../components/ThreadCard";
 import NewRoomPopup from "../components/NewRoomPopup";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
+import { api } from "../api";
 
 const categories = [
   "All Threads",
@@ -21,8 +22,24 @@ export const Discover = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [threads, setThreads] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [participatedThreadIds, setParticipatedThreadIds] = useState([]);
 
-  // 🔁 Real-time thread fetch
+  useEffect(() => {
+    const fetchParticipated = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      try {
+        const res = await api.get(`/user/${user.uid}/participatedThreads`);
+        setParticipatedThreadIds(res.data.threadIds || []);
+      } catch (err) {
+        console.error("Failed to fetch participated threads", err);
+      }
+    };
+
+    fetchParticipated();
+  }, []);
+
   useEffect(() => {
     const q = query(collection(db, "threads"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -36,7 +53,6 @@ export const Discover = () => {
     return () => unsubscribe();
   }, []);
 
-  // 🔍 Filter by category + search
   const filteredThreads = threads.filter((thread) => {
     const matchesCategory =
       selectedCategory === "All Threads" ||
@@ -49,7 +65,6 @@ export const Discover = () => {
     return matchesCategory && matchesSearch;
   });
 
-  // 🔴 Remove thread from UI after deletion
   const handleThreadDelete = (threadId) => {
     setThreads((prev) => prev.filter((thread) => thread.id !== threadId));
   };
@@ -93,6 +108,7 @@ export const Discover = () => {
             key={thread.id}
             thread={thread}
             onDelete={handleThreadDelete}
+            participatedThreadIds={participatedThreadIds}
           />
         ))}
       </div>
