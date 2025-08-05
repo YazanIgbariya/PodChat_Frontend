@@ -70,7 +70,7 @@ export const Login = () => {
         );
         const user = result.user;
 
-        // ✅ Set Firebase Auth display name
+        //Set Firebase Auth display name
         await updateProfile(user, {
           displayName: name.trim(),
         });

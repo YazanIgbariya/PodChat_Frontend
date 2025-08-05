@@ -9,7 +9,7 @@ export default function NewRoomPopup({ onClose, onCreateThread }) {
   const [category, setCategory] = useState("Technology");
   const [access, setAccess] = useState("public");
   const [enableAI, setEnableAI] = useState(false);
-  const [enableIntent, setEnableIntent] = useState(true); // ✅ default ON
+  const [enableIntent, setEnableIntent] = useState(true);
   const [allowAnon, setAllowAnon] = useState(false);
 
   const categoryOptions = [
@@ -37,7 +37,7 @@ export default function NewRoomPopup({ onClose, onCreateThread }) {
         access,
         enableAI,
         allowAnon,
-        enableIntent, // ✅ now included
+        enableIntent,
       });
 
       const thread = res.data;
@@ -55,7 +55,7 @@ export default function NewRoomPopup({ onClose, onCreateThread }) {
       onClose();
     } catch (err) {
       console.error("Failed to create thread:", err);
-      alert("❌ Could not create thread. Try again.");
+      alert("Could not create thread. Try again.");
     }
   };
 
@@ -111,7 +111,7 @@ export default function NewRoomPopup({ onClose, onCreateThread }) {
 
           <div className="form-group radio-options">
             <label>Access Settings</label>
-            {/* Placeholder: You can add more access options later */}
+            {/* . */}
           </div>
 
           <div className="form-group toggles">

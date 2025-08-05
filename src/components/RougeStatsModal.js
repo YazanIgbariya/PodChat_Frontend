@@ -1,6 +1,5 @@
-// src/components/RougeStatsModal.js
 import React, { useEffect, useState } from "react";
-import "./TopContributorsModal.css"; // reuse your existing modal style
+import "./TopContributorsModal.css";
 import axios from "axios";
 
 export default function RougeStatsModal({ threadId, onClose }) {

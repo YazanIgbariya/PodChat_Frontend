@@ -2,7 +2,7 @@ import React from "react";
 import WordCloud from "react-wordcloud";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/animations/scale.css";
-import "./WordCloudModal.css"; // create a simple modal style
+import "./WordCloudModal.css";
 
 export default function WordCloudModal({ words, onClose }) {
   return (

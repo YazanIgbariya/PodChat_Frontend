@@ -1,4 +1,3 @@
-// src/pages/Starred.js
 import GenericDiscoverPage from "./GenericDiscoverPage";
 
 export default function Starred() {

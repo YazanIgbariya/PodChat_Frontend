@@ -1,4 +1,3 @@
-// src/pages/New.js
 import GenericDiscoverPage from "./GenericDiscoverPage";
 
 export default function New() {

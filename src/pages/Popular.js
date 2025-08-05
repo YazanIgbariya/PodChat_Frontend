@@ -1,4 +1,3 @@
-// src/pages/Popular.js
 import React from "react";
 import GenericDiscoverPage from "./GenericDiscoverPage";
 

@@ -121,7 +121,7 @@ export const ChatDetails = () => {
 
       if (status === 429) {
         alert(
-          "🕒 You need 50 new messages since the last summary to summarize again."
+          "You need 50 new messages since the last summary to summarize again."
         );
       } else if (status === 400) {
         alert(
@@ -130,7 +130,7 @@ export const ChatDetails = () => {
         );
       } else {
         alert(
-          "⚠️ Something went wrong while summarizing. Please try again later."
+          "Something went wrong while summarizing. Please try again later."
         );
       }
     } finally {
@@ -159,7 +159,7 @@ export const ChatDetails = () => {
       // Skip early if not enough new messages
       if (newMessageCount < 20) {
         console.log(
-          `⏭️ Skipping auto-summarization: only ${newMessageCount} new messages`
+          `Skipping auto-summarization: only ${newMessageCount} new messages`
         );
         return;
       }
